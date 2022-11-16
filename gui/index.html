@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+
+<html lang="de" dir="ltr">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <link id="stylesheet" rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+  <script type="text/javascript" src="js/userData.js"></script>
+  <script type="text/javascript" src="js/gui.js"></script>
+  <script type="text/javascript" src="js/plotter.js"></script>
+  <script type="text/javascript" src="js/randomizer.js"></script>
+  <script type="text/javascript" src="js/websocket.js"></script>
+  <script type="text/javascript" src="main.js"></script>
+
+  <title>LF10 FIAE</title>
+
+</head>
+
+<body>
+
+  <div id="settings_wrapper" style="display: none;">
+
+    <div id="settings_blocker"></div>
+
+    <div id="settings">
+
+      <div id="settings_header">
+
+        <div id="settings_close" onclick="settingsOFF();"></div>
+        <div id="settings_text">Einstellungen</div>
+
+      </div>
+
+      <div class="setting_slider">
+
+        <div class="setting_slider_title">Personen im Haushalt</div>
+        <div class="setting_slider_range">
+          <input type="range" min="1" max="10" value="1" id="people_slider" oninput="changePeople();" onchange="submitPeople();">
+        </div>
+        <div class="setting_slider_value" id="people_value">1</div>
+
+      </div>
+
+      <div id="settings_box">
+
+        <div class="setting_checkbox" onclick="selectBox(this);" id="warnungen">
+
+          <div class="setting_checkbox_box">
+            <input type="checkbox" checked="checked">
+          </div>
+
+          <div class="setting_checkbox_text" >Warnungen</div>
+
+        </div>
+        <div class="setting_checkbox" onclick="selectBox(this);" id="probleme">
+
+          <div class="setting_checkbox_box">
+            <input type="checkbox" checked="checked">
+          </div>
+
+          <div class="setting_checkbox_text">Probleme</div>
+
+        </div>
+
+      </div>
+
+      <div id="settings_values">
+
+        <div class="settings_value" id="settings_value_power">
+
+          <div class="settings_value_header">
+            <div class="settings_value_icon tile_header_icon_power"></div>
+            <div class="settings_value_text">Energie</div>
+          </div>
+
+          <div class="settings_value_lines">
+
+            <div class="settings_value_line">
+              <div class="settings_value_opt">Warnung:</div>
+              <div class="settings_value_value">0</div>
+            </div>
+
+            <div class="settings_value_line">
+              <div class="settings_value_opt">Problem:</div>
+              <div class="settings_value_value">0</div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="settings_value" id="settings_value_water">
+
+          <div class="settings_value_header">
+            <div class="settings_value_icon tile_header_icon_water"></div>
+            <div class="settings_value_text">Wasser</div>
+          </div>
+
+          <div class="settings_value_lines">
+
+            <div class="settings_value_line">
+              <div class="settings_value_opt">Warnung:</div>
+              <div class="settings_value_value">0</div>
+            </div>
+
+            <div class="settings_value_line">
+              <div class="settings_value_opt">Problem:</div>
+              <div class="settings_value_value">0</div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="settings_value" id="settings_value_gas">
+
+          <div class="settings_value_header">
+            <div class="settings_value_icon tile_header_icon_gas"></div>
+            <div class="settings_value_text">Gas</div>
+          </div>
+
+          <div class="settings_value_lines">
+
+            <div class="settings_value_line">
+              <div class="settings_value_opt">Warnung:</div>
+              <div class="settings_value_value">0</div>
+            </div>
+
+            <div class="settings_value_line">
+              <div class="settings_value_opt">Problem:</div>
+              <div class="settings_value_value">0</div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div id="main_wrapper">
+
+    <div id="header">
+
+      <div id="header_bar">
+
+        <div id="settings_icon" class="header_bar_icon header_bar_icon_hamburger" onclick="settingsON();"></div>
+        <div id="header_bar_text">Mein Zuhause</div>
+        <div id="header_darkmode_button" class="header_bar_icon header_bar_icon_darkmode" onclick="toggleDarkMode();" darkmode="false"></div>
+
+      </div>
+
+      <div id="header_info">
+
+        <div id="header_info_icon"></div>
+
+        <div id="header_info_wrapper">
+
+          <div id="header_info_status">Verbinden...</div>
+          <div id="header_info_text"></div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div id="body">
+
+      <div class="body_title">Übersicht</div>
+
+      <div class="tile tile_small" id="energie">
+
+        <div class="tile_header">
+          <div class="tile_header_icon tile_header_icon_power"></div>
+          <div class="tile_header_text">Energie</div>
+        </div>
+
+        <div class="tile_content">
+          <div class="tile_wrapper">
+            <div class="tile_value">0</div>
+            <div class="tile_unit">kW/h</div>
+          </div>
+        </div>
+
+        <div class="tile_footer tile_footer_good"></div>
+
+      </div>
+
+      <div class="tile tile_small" id="wasser">
+
+        <div class="tile_header">
+          <div class="tile_header_icon tile_header_icon_water"></div>
+          <div class="tile_header_text">Wasser</div>
+        </div>
+
+        <div class="tile_content">
+          <div class="tile_wrapper">
+            <div class="tile_value">0</div>
+            <div class="tile_unit">L</div>
+          </div>
+        </div>
+
+        <div class="tile_footer tile_footer_good"></div>
+
+      </div>
+
+      <div class="tile tile_small" id="gas">
+
+        <div class="tile_header">
+          <div class="tile_header_icon tile_header_icon_gas"></div>
+          <div class="tile_header_text">Gas</div>
+        </div>
+
+        <div class="tile_content">
+          <div class="tile_wrapper">
+            <div class="tile_value">0</div>
+            <div class="tile_unit">kW/h</div>
+          </div>
+        </div>
+
+        <div class="tile_footer tile_footer_good"></div>
+
+      </div>
+
+      <div class="tile tile_small" id="co2">
+
+        <div class="tile_header">
+          <div class="tile_header_icon tile_header_icon_carbon"></div>
+          <div class="tile_header_text">Carbon Footprint</div>
+        </div>
+
+        <div class="tile_content">
+          <div class="tile_wrapper">
+            <div class="tile_value">0</div>
+            <div class="tile_unit">kg</div>
+          </div>
+        </div>
+
+        <div class="tile_footer tile_footer_good"></div>
+
+      </div>
+
+      <div class="body_title">Details</div>
+
+      <div class="tile tile_large">
+
+        <div class="tile_header">
+          <div class="tile_header_icon tile_header_icon_power"></div>
+          <div class="tile_header_text">Energie Tagesübersicht</div>
+        </div>
+
+        <div class="tile_canvas_wrapper">
+          <canvas class="tile_canvas" id="canvas_day_power"></canvas>
+        </div>
+
+      </div>
+
+      <div class="tile tile_large">
+
+        <div class="tile_header">
+          <div class="tile_header_icon tile_header_icon_power"></div>
+          <div class="tile_header_text">Energie Monatsübersicht</div>
+        </div>
+
+        <div class="tile_canvas_wrapper">
+          <canvas class="tile_canvas" id="canvas_month_power"></canvas>
+        </div>
+
+      </div>
+
+      <div class="tile tile_large">
+
+        <div class="tile_header">
+          <div class="tile_header_icon tile_header_icon_water"></div>
+          <div class="tile_header_text">Wasser Tagesübersicht</div>
+        </div>
+
+        <div class="tile_canvas_wrapper">
+          <canvas class="tile_canvas" id="canvas_day_water"></canvas>
+        </div>
+
+      </div>
+
+      <div class="tile tile_large">
+
+        <div class="tile_header">
+          <div class="tile_header_icon tile_header_icon_water"></div>
+          <div class="tile_header_text">Wasser Monatsübersicht</div>
+        </div>
+
+        <div class="tile_canvas_wrapper">
+          <canvas class="tile_canvas" id="canvas_month_water"></canvas>
+        </div>
+
+      </div>
+
+      <div class="tile tile_large">
+
+        <div class="tile_header">
+          <div class="tile_header_icon tile_header_icon_gas"></div>
+          <div class="tile_header_text">Gas Tagesübersicht</div>
+        </div>
+
+        <div class="tile_canvas_wrapper">
+          <canvas class="tile_canvas" id="canvas_day_gas"></canvas>
+        </div>
+
+      </div>
+
+      <div class="tile tile_large">
+
+        <div class="tile_header">
+          <div class="tile_header_icon tile_header_icon_gas"></div>
+          <div class="tile_header_text">Gas Monatsübersicht</div>
+        </div>
+
+        <div class="tile_canvas_wrapper">
+          <canvas class="tile_canvas" id="canvas_month_gas"></canvas>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</body>
+
+</html>

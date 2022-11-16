@@ -1,0 +1,5 @@
+Befehl: test("element", wert);
+
+Mögliche elemente: energie, wasser, gas, co2
+
+Werte unter 4000 = Warnung, Werte über 4000 = Problem
