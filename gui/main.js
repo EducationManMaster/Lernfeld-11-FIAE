@@ -2,6 +2,7 @@ window.addEventListener("resize", resizeGUI);
 document.addEventListener("DOMContentLoaded", function() {
 
   initSocket();
+  emailInit();
 
   setInfo("g");
   resizeGUI();

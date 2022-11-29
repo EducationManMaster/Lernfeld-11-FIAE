@@ -16,13 +16,32 @@
   <script type="text/javascript" src="js/plotter.js"></script>
   <script type="text/javascript" src="js/randomizer.js"></script>
   <script type="text/javascript" src="js/websocket.js"></script>
+  <script type="text/javascript" src="js/email.js"></script>
+  <script type="text/javascript" src="js/user.js"></script>
+  <script type="text/javascript" src="js/calc.js"></script>
   <script type="text/javascript" src="main.js"></script>
 
-  <title>LF10 FIAE</title>
+  <title>LF11 FIAE</title>
 
 </head>
 
 <body>
+
+  <div id="login">
+
+    <div id="login_wrapper">
+
+      <div id="login_logo"></div>
+      <div id="login_title">Bitte melden sie sich an.</div>
+
+      <input type="text" class="login_textarea" id="login_username" placeholder="Name">
+      <input type="password" class="login_textarea" id="login_password" placeholder="Passwort">
+
+      <div id="login_button" onclick="tryLogin();">Anmelden</div>
+
+    </div>
+
+  </div>
 
   <div id="settings_wrapper" style="display: none;">
 
@@ -147,6 +166,51 @@
 
   </div>
 
+  <div id="calc_wapper">
+
+    <div id="calc">
+
+      <div id="calc_header">
+
+        <div id="calc_header_close" onclick="closeCalc();"></div>
+        <div id="calc_header_title">Stromverbrauchsrechner</div>
+
+      </div>
+
+      <div id="calc_result">
+
+        <div id="calc_result_wrapper">
+
+          <div id="calc_result_value">0€</div>
+          <div id="calc_result_unit">pro Jahr</div>
+
+        </div>
+
+      </div>
+
+      <div id="calc_input">
+
+        <div id="calc_input_header">
+
+          <div id="calc_input_header_icon"></div>
+          <div id="calc_input_header_title">Stromverbrauch berechnen</div>
+
+        </div>
+
+        <div class="calc_input_text">Wie viele Watt verbraucht ihr Gerät?</div>
+        <input type="number" class="calc_input_area" id="calc_input_watt" placeholder="Watt">
+
+        <div class="calc_input_text">Wie viele Stunden pro Tag läuft das Gerät?</div>
+        <input type="number" class="calc_input_area" id="calc_input_time" placeholder="Stunden">
+
+        <div id="calc_input_button" onclick="calcPrice();">Berechnen</div>
+
+      </div>
+
+    </div>
+
+  </div>
+
   <div id="main_wrapper">
 
     <div id="header">
@@ -175,6 +239,13 @@
     </div>
 
     <div id="body">
+
+      <div id="tile_live">
+
+        <div id="tile_live_icon"><div id="tile_live_icon_animation"></div></div>
+        <div id="tile_live_text">Daten werden Live aktualisiert.</div>
+
+      </div>
 
       <div class="body_title">Übersicht</div>
 
@@ -247,6 +318,19 @@
         </div>
 
         <div class="tile_footer tile_footer_good"></div>
+
+      </div>
+
+      <div id="tile_calc" onclick="openCalc();">
+
+        <div id="tile_calc_icon"></div>
+
+        <div id="tile_calc_wrapper">
+
+          <div id="tile_calc_title">Stromverbrauchsrechner</div>
+          <div id="tile_calc_text">Neues Feature: berechnen sie viel Strom, ihr neues Gerät verbraucht.</div>
+
+        </div>
 
       </div>
 
